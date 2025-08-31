@@ -31,20 +31,14 @@ public class DashBoardPage {
         return cards.findBy(Condition.attribute("data-test-id", cardInfo.getId()));
     }
 
+    public int getCardBalance(DataHelper.CardInfo cardInfo) {
+        var text = getCard(cardInfo).getText();
+        return extractBalance(text);
+    }
+
     public TransferPage selectCardToTransfer(DataHelper.CardInfo cardInfo) {
         getCard(cardInfo).$("button").click();
         return new TransferPage();
-    }
-
-    public int getCardBalance(DataHelper.CardInfo cardInfo) {
-        for (SelenideElement card : cards) {
-            String cardId = card.getAttribute("data-test-id");
-            if (cardId != null && cardId.contains(cardInfo.getId())) {
-                String text = card.getText();
-                return extractBalance(text);
-            }
-        }
-        throw new Error("Карта с id " + cardInfo.getId() + " не найдена");
     }
 
     private int extractBalance(String text) {

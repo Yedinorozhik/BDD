@@ -20,20 +20,8 @@ public class TransferPage {
     }
 
     public void makeTransfer(String amountToTransfer, DataHelper.CardInfo cardInfo) {
-        enterAmount(amountToTransfer);
-        enterCardNumber(cardInfo.getCardNumber());
-        submitTransfer();
-    }
-
-    private void enterAmount(String amountToTransfer) {
         amountInput.setValue(amountToTransfer);
-    }
-
-    private void enterCardNumber(String cardNumber) {
-        fromInput.setValue(cardNumber);
-    }
-
-    private void submitTransfer() {
+        fromInput.setValue(cardInfo.getCardNumber());
         transferButton.click();
     }
 
@@ -43,11 +31,11 @@ public class TransferPage {
     }
 
     public void findErrorMessage(String expectedText) {
-        errorMessage.should(Condition.and("Ошибка", Condition.text(expectedText), visible));
+        errorMessage.shouldBe(visible, Condition.text(expectedText));
     }
 
-    public boolean isTransferSuccessful() {
-        return !amountInput.is(visible);
+    public void shouldBeSuccessfulTransfer() {
+        amountInput.shouldBe(visible);
     }
 
 }

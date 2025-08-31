@@ -1,6 +1,7 @@
 package ru.netology.data;
 
 import lombok.Value;
+import com.github.javafaker.Faker;
 
 public class DataHelper {
 
@@ -41,6 +42,11 @@ public class DataHelper {
 
     public static int generateInvalidAmount(int balance) {
         return Math.abs(balance) + 1;
+    }
+
+
+    public static CardInfo getInvalidCardNumber() {
+        return new CardInfo("9999 9999 9999 9999", "");
     }
 
 

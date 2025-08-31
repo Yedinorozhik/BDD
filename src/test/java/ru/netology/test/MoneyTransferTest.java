@@ -79,7 +79,7 @@ public class MoneyTransferTest {
 
         transferPage.makeTransfer(String.valueOf(amount), secondCardInfo);
 
-        assertAll(() -> transferPage.findErrorMessage("Ошибка"),
+        assertAll(() -> transferPage.findErrorMessage("Ошибка! Недостаточно средств на карте для перевода."),
                 () -> dashBoardPage.reloadDashBoardPage(),
                 () -> dashBoardPage.checkCardBalance(firstCardInfo, firstCardBalance),
                 () -> dashBoardPage.checkCardBalance(secondCardInfo, secondCardBalance));
@@ -94,17 +94,17 @@ public class MoneyTransferTest {
 
         dashBoardPage.reloadDashBoardPage();
 
-        assertAll(() -> transferPage.findErrorMessage("Ошибка"),
+        assertAll(() -> transferPage.findErrorMessage("Ошибка! Сумма для перевода равна нулю."),
                 () -> dashBoardPage.checkCardBalance(firstCardInfo, firstCardBalance),
                 () -> dashBoardPage.checkCardBalance(secondCardInfo, secondCardBalance));
     }
 
     @Test
     void shouldShowErrorWhenUsingInvalidCardNumber() {
+        var amount = generateValidAmount(firstCardBalance);
         TransferPage transferPage = dashBoardPage.selectCardToTransfer(DataHelper.getFirstCardInfo());
 
-        String invalidCardNumber = "9999 9999 9999 9999";
-        transferPage.makeTransfer("1000", new DataHelper.CardInfo(invalidCardNumber, "fake-id"));
+        transferPage.makeTransfer(String.valueOf(amount), DataHelper.getInvalidCardNumber());
 
         transferPage.findErrorMessage("Ошибка! Произошла ошибка");
     }
@@ -117,4 +117,6 @@ public class MoneyTransferTest {
 
         transferPage.findErrorMessage("Ошибка! Произошла ошибка");
     }
+
+
 }
